@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detector de Phishing</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 500px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #1abc9c;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #16a085;
+        }
+
+        .resultado {
+            margin-top: 40px;
+            text-align: left;
+            width: 100%;
+            max-width: 700px;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .resultado h2 {
+            border-bottom: 1px solid white;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .resultado p {
+            margin: 10px 0;
+        }
+
+        .score-tag {
+            display: inline-block;
+            background-color: #34495e;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Detector de URLs Sospechosas</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.url }}
+        <button type="submit">Analizar URL</button>
+    </form>
+
+    {% if analysis %}
+    <div class="resultado">
+        <h2>Resultado del Análisis</h2>
+
+        <p><strong>URL Analizada:</strong> {{ analysis.url }}</p>
+        <p><strong>Veredicto Final:</strong> {{ analysis.verdict }}</p>
+
+        <hr>
+
+        <p><strong>Análisis Heurístico:</strong></p>
+        <p>- Puntuación: <span class="score-tag">{{ analysis.heur_score }}</span></p>
+        <p>- Indicadores: {{ analysis.heur_flags }}</p>
+
+        <p><strong>Modelo ML:</strong></p>
+        <p>- Predicción: {{ ml_pred }}</p>
+        <p>- Probabilidad: {{ ml_prob }}</p>
+
+        <p><strong>VirusTotal:</strong></p>
+        <p>- Detecciones Maliciosas: {{ analysis.vt_malicious }}</p>
+        <p>- Detecciones Benignas: {{ analysis.vt_harmless }}</p>
+    </div>
+    {% endif %}
+</body>
+</html>
