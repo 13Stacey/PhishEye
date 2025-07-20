@@ -17,7 +17,7 @@ El objetivo es detectar URLs maliciosas mediante técnicas heurísticas, machine
 
 ## 🖼️ Vista previa
 
-> *(Aquí puedes añadir una captura de pantalla del análisis completo, cuando quieras.)*
+![image](https://github.com/user-attachments/assets/d3781056-bddb-4c36-b8a9-c6b153b393e6)
 
 ---
 
