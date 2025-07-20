@@ -111,3 +111,12 @@ GitHub: [13Stacey](https://github.com/13Stacey)
 ## 🧠 Licencia
 
 Este proyecto se entrega como parte de un TFM académico y puede ser reutilizado con fines educativos y no comerciales. Para más información, contacta con el autor.
+
+## 🧾 Historial de versiones
+
+### v1.1 (Julio 2025)
+- Añadido informe ejecutivo inicial tras el análisis de URL.
+- Integración básica con exportación a PDF del análisis.
+- Vista `dashboard` con histórico de análisis por usuario.
+- Interfaz funcional con login y registro de usuarios.
+- Estilo base con fondo degradado y diseño claro.
