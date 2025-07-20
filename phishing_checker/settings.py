@@ -45,11 +45,11 @@ ROOT_URLCONF = 'phishing_checker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # Podemos dejarlo vacío porque usaremos APP_DIRS=True
+        'DIRS': [BASE_DIR / 'analyzer' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.request',  # ✅ Necesario para login
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -73,8 +73,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-LANGUAGE_CODE = 'es-es'  # ✅ Puedes cambiarlo a español si lo prefieres
-TIME_ZONE = 'Europe/Madrid'  # ✅ Para que use tu zona horaria
+LANGUAGE_CODE = 'es-es'  
+TIME_ZONE = 'Europe/Madrid'  
 
 USE_I18N = True
 USE_TZ = True
@@ -84,7 +84,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ✅ Redirección tras login
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/dashboard/'
 
 # ✅ Clave de API de VirusTotal (se usará más adelante)
 VIRUSTOTAL_API_KEY = '8ccb04a3402a4b57c102f74c45c8ac1f579a063b0be595e6f50accc3b30f6b8c'

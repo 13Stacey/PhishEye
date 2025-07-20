@@ -62,6 +62,7 @@
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(255,255,255,0.2);
+            
         }
 
         .resultado h2 {
@@ -82,6 +83,37 @@
             margin-left: 10px;
             font-size: 0.9em;
         }
+
+        .veredicto-legitimo {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .veredicto-malicioso {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        ul {
+            margin-top: 5px;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .volver {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .volver a {
+            color: #1abc9c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .volver a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -98,21 +130,46 @@
         <h2>Resultado del Análisis</h2>
 
         <p><strong>URL Analizada:</strong> {{ analysis.url }}</p>
-        <p><strong>Veredicto Final:</strong> {{ analysis.verdict }}</p>
 
+        <p>
+            <strong>Veredicto Final:</strong>
+            {% if analysis.verdict == 'malicioso' %}
+                <span class="veredicto-malicioso">🔴 Malicioso</span>
+            {% else %}
+                <span class="veredicto-legitimo">🟢 Legítimo</span>
+            {% endif %}
+        </p>
+
+        <p><strong>Puntuación Total (combinada):</strong> 
+            <span class="score-tag">{{ analysis.final_score|floatformat:2 }}</span>
+        </p>
+        <div style="background: #555; height: 10px; width: 100%; border-radius: 5px; overflow: hidden; margin-top: 5px;">
+            <div style="height: 100%; width: {{ analysis.final_score|floatformat:2|floatformat:"0" }}%; background: {% if analysis.verdict == 'malicioso' %}#e74c3c{% else %}#2ecc71{% endif %}; transition: width 0.5s;"></div>
+        </div>
+        
         <hr>
 
         <p><strong>Análisis Heurístico:</strong></p>
         <p>- Puntuación: <span class="score-tag">{{ analysis.heur_score }}</span></p>
-        <p>- Indicadores: {{ analysis.heur_flags }}</p>
-
+        <p>- Indicadores:</p>
+        <ul>
+            {% for flag in heur_flags_list %}
+            <li>{{ flag }}</li>
+            {% empty %}
+            <li>No hay indicadores</li>
+            {% endfor %}
+        </ul>
         <p><strong>Modelo ML:</strong></p>
         <p>- Predicción: {{ ml_pred }}</p>
-        <p>- Probabilidad: {{ ml_prob }}</p>
+        <p>- Probabilidad: <span class="score-tag">{{ ml_prob }}</span></p>
 
         <p><strong>VirusTotal:</strong></p>
         <p>- Detecciones Maliciosas: {{ analysis.vt_malicious }}</p>
         <p>- Detecciones Benignas: {{ analysis.vt_harmless }}</p>
+
+        <div class="volver">
+            <a href="{% url 'dashboard' %}">← Volver al Dashboard</a>
+        </div>
     </div>
     {% endif %}
 </body>

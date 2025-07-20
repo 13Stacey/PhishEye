@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: phishing_checker_app
+    ports:
+      - "8000:8000"
+    environment:
+      - "VIRUSTOTAL_API_KEY=8ccb04a3402a4b57c102f74c45c8ac1f579a063b0be595e6f50accc3b30f6b8c"
+    restart: unless-stopped

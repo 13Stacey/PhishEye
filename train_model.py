@@ -1,41 +1,67 @@
 import pandas as pd
-import re
-from urllib.parse import urlparse
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import classification_report, accuracy_score
 import joblib
+import os
 
-# Cargar dataset
-df = pd.read_csv('data/malicious_phish.csv')
-df = df[['url', 'type']]  # Nos quedamos solo con estas dos columnas
-df = df[df['type'].isin(['phishing', 'benign'])]  # Aseguramos tipos válidos
+# ============================
+# CONFIGURACIÓN DE RUTA
+# ============================
+dataset_path = os.path.join("data", "dataset_phishing.csv")
 
-# Normalizar etiquetas
-df['label'] = df['type'].apply(lambda x: 'phishing' if x == 'phishing' else 'legítimo')
+# ============================
+# CARGA Y PREPARACIÓN DEL DATASET
+# ============================
+df = pd.read_csv(dataset_path)
 
-# Función para extraer características simples desde una URL
-def extract_features(url):
-    parsed = urlparse(url)
-    hostname = parsed.hostname or ""
-    features = [
-        len(url),
-        len(re.findall(r'\d', url)),
-        1 if re.match(r'^\d+(\.\d+){3}$', hostname) else 0,
-        url.count('@') + url.count('-'),
-        1 if any(kw in url.lower() for kw in ['login','secure','account','update','verify','bank','signin']) else 0
-    ]
-    return features
+# Selección de columnas del dataset original
+features = [
+    'length_url', 'nb_dots', 'nb_hyphens', 'nb_at', 'https_token',
+    'ip', 'ratio_digits_url', 'prefix_suffix', 'phish_hints', 'domain_age'
+]
 
-# Extraer X e y
-X = [extract_features(u) for u in df['url']]
+# Preparamos DataFrame con copia segura
+df = df[features + ['status']].copy()
+df.dropna(inplace=True)
+
+# Mapeamos la etiqueta textual a binaria
+df['label'] = df['status'].map({'legitimate': 0, 'phishing': 1})
+
+X = df[features]
 y = df['label']
 
-# Entrenar modelo
-clf = RandomForestClassifier(n_estimators=100, random_state=42)
-clf.fit(X, y)
+# ============================
+# ESCALADO Y DIVISIÓN DE DATOS
+# ============================
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
 
-# Evaluar
-print("Precisión en entrenamiento:", clf.score(X, y))
+X_train, X_test, y_train, y_test = train_test_split(
+    X_scaled, y, test_size=0.2, random_state=42
+)
 
-# Guardar modelo
-joblib.dump(clf, 'analyzer/ml_model.pkl')
-print("Modelo guardado en analyzer/ml_model.pkl")
+# ============================
+# ENTRENAMIENTO DEL MODELO
+# ============================
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# ============================
+# EVALUACIÓN
+# ============================
+y_pred = model.predict(X_test)
+print("\n✅ Informe de clasificación:")
+print(classification_report(y_test, y_pred))
+print("🔢 Exactitud total:", round(accuracy_score(y_test, y_pred) * 100, 2), "%")
+
+# ============================
+# GUARDADO DEL MODELO Y SCALER
+# ============================
+joblib.dump(model, 'ml_model.pkl')
+joblib.dump(scaler, 'scaler.pkl')
+
+print("\n📦 Modelo y scaler guardados como:")
+print(" - ml_model.pkl")
+print(" - scaler.pkl")

@@ -16,6 +16,7 @@ class URLAnalysis(models.Model):
     ml_probability = models.FloatField("Probabilidad ML", null=True, blank=True)
 
     verdict = models.CharField("Veredicto global", max_length=50, null=True, blank=True)
+    final_score = models.FloatField("Puntuación combinada final", null=True, blank=True)
 
     def __str__(self):
         return f"[{self.date:%Y-%m-%d %H:%M}] {self.url} -> {self.verdict}"

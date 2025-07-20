@@ -1,0 +1,30 @@
+{% extends "analyzer/base.html" %}
+{% block content %}
+<h2>Bienvenido, {{ request.user.username }}</h2>
+
+<form method="POST" action="{% url 'analyze_url' %}">
+    {% csrf_token %}
+    {{ form.url }}
+    <button type="submit">Analizar</button>
+</form>
+
+<hr>
+
+<h3>Últimos análisis</h3>
+<table>
+    <tr>
+        <th>URL</th>
+        <th>Fecha</th>
+        <th>Veredicto</th>
+    </tr>
+    {% for a in history %}
+    <tr>
+        <td>{{ a.url }}</td>
+        <td>{{ a.date }}</td>
+        <td>{{ a.verdict }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">Aún no hay análisis realizados.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
