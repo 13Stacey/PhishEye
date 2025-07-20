@@ -140,6 +140,12 @@
             {% endif %}
         </p>
 
+        <p style="text-align: right; margin-top: 10px;">
+        <a href="{% url 'executive_report' analysis.id %}" style="color: #00ffc8; font-weight: bold;">
+        🔎 Ver informe ejecutivo completo
+        </a>
+        </p>
+
         <p><strong>Puntuación Total (combinada):</strong> 
             <span class="score-tag">{{ analysis.final_score|floatformat:2 }}</span>
         </p>

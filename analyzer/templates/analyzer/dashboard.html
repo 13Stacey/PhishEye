@@ -2,6 +2,7 @@
 {% block content %}
 <h2>Bienvenido, {{ request.user.username }}</h2>
 
+
 <form method="POST" action="{% url 'analyze_url' %}">
     {% csrf_token %}
     {{ form.url }}
@@ -16,15 +17,17 @@
         <th>URL</th>
         <th>Fecha</th>
         <th>Veredicto</th>
+        <th>Informe</th>
     </tr>
     {% for a in history %}
     <tr>
         <td>{{ a.url }}</td>
         <td>{{ a.date }}</td>
         <td>{{ a.verdict }}</td>
+        <td><a href="{% url 'analysis_dashboard' a.id %}">Ver informe</a></td>
     </tr>
     {% empty %}
-    <tr><td colspan="3">Aún no hay análisis realizados.</td></tr>
+    <tr><td colspan="4">Aún no hay análisis realizados.</td></tr>
     {% endfor %}
 </table>
 {% endblock %}
