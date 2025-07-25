@@ -173,3 +173,34 @@ python manage.py runserver
 ```
 
 ---
+
+🐳 Despliegue con Docker
+Puedes ejecutar PhishEye en un contenedor Docker que ya incluye todas sus dependencias, incluido WeasyPrint para la generación de PDFs. Es ideal si no quieres instalar nada más en tu sistema.
+
+🔧 Requisitos
+Docker
+
+Docker Compose
+
+▶️ Instrucciones de uso
+Clona el repositorio:
+
+
+git clone https://github.com/13Stacey/PhishEye.git
+cd PhishEye
+Crea un archivo .env con tu clave de API de VirusTotal:
+
+VIRUSTOTAL_API_KEY=TU_API_KEY
+
+Levanta la aplicación:
+
+docker-compose up --build
+
+Accede desde el navegador:
+
+http://localhost:8000
+
+🐳 Despliegue para producción
+Si deseas un entorno más optimizado, puedes usar el archivo docker-compose.prod.yml, que emplea Gunicorn como servidor WSGI:
+
+docker-compose -f docker-compose.prod.yml up --build
