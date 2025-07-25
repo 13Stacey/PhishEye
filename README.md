@@ -1,17 +1,18 @@
 # 🛡️ PhishEye - Analizador de URLs Sospechosas (TFM)
 
-**PhishEye** es un proyecto desarrollado como Trabajo de Fin de Máster (TFM) por Eduardo Bejarano, dentro del Máster en Seguridad de las Tecnologías de la Información y las Comunicaciones.  
+**PhishEye** es un proyecto desarrollado como Trabajo de Fin de Máster (TFM) por Eduardo Bejarano, dentro del Máster en Seguridad de las Tecnologías de la Información y las Comunicaciones.
 El objetivo es detectar URLs maliciosas mediante técnicas heurísticas, machine learning y consultas a VirusTotal, todo integrado en una interfaz web sencilla y profesional.
 
 ---
 
-## 🔍 Funcionalidades
+## Funcionalidades principales
 
-- 🧠 **Análisis heurístico**: identifica patrones sospechosos en la URL (IP en dominio, uso de `@`, subdominios, palabras clave como `login`, `secure`, etc.).
-- 🤖 **Clasificación con Machine Learning**: predicción entrenada con dataset real etiquetado.
-- ☣️ **Consulta a VirusTotal**: verificación de reputación real mediante su API pública.
-- 💾 **Almacenamiento en base de datos**: guarda el análisis, el usuario y los indicadores detectados.
-- 🔐 **Login requerido**: solo usuarios autenticados pueden usar el sistema.
+* ✅ Análisis de URLs con modelo ML personalizado
+* ✅ Entrenamiento automático con CSVs (última columna = etiqueta)
+* ✅ Generación de informes detallados por análisis
+* ✅ Exportación de informes en PDF
+* ✅ Registro/login de usuarios
+* ✅ Dashboard con histórico de análisis
 
 ---
 
@@ -61,8 +62,8 @@ python manage.py runserver
 
 ## 🧪 Prueba
 
-Una vez el servidor esté corriendo, accede a:  
-`http://127.0.0.1:8000/`  
+Una vez el servidor esté corriendo, accede a:
+`http://127.0.0.1:8000/`
 y realiza un análisis introduciendo una URL.
 
 ---
@@ -76,34 +77,53 @@ y realiza un análisis introduciendo una URL.
 ## 📁 Estructura del proyecto
 
 ```
-phishing_checker/
+PhishEye/
 ├── analyzer/
-│   ├── migrations/
-│   ├── templates/analyzer/
+│   ├── templates/
+│   │   └── analyzer/
+│   │       ├── base.html
+│   │       ├── login.html
+│   │       ├── register.html
+│   │       ├── dashboard.html
+│   │       ├── analysis_dashboard.html
+│   │       └── training/train_model.html
 │   ├── static/
-│   ├── models.py
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
 │   ├── forms.py
+│   ├── models.py
+│   ├── urls.py
 │   ├── utils.py
 │   └── views.py
 ├── phishing_checker/
-│   └── settings.py
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── data/
+│   └── (aquí se guardan modelos, escaladores y datasets por usuario)
 ├── db.sqlite3
-└── manage.py
+├── manage.py
+├── README.md
+├── requirements.txt
+└── venv/  (NO se sube a GitHub)
 ```
 
 ---
 
 ## 🙋 Autor
 
-**Eduardo Bejarano Rua**  
-Cybersecurity & Digital Forensics | Universidad Europea  
+**Eduardo Bejarano Rua**
+Cybersecurity & Digital Forensics | Universidad Europea
 GitHub: [13Stacey](https://github.com/13Stacey)
 
 ---
 
 ## 🏁 Estado del proyecto
 
-✅ Versión estable `v1.0`  
+✅ Versión estable `v1.0`
 🛠️ Se está trabajando en la integración avanzada de VirusTotal y mejoras visuales
 
 ---
@@ -112,11 +132,44 @@ GitHub: [13Stacey](https://github.com/13Stacey)
 
 Este proyecto se entrega como parte de un TFM académico y puede ser reutilizado con fines educativos y no comerciales. Para más información, contacta con el autor.
 
+---
+
 ## 🧾 Historial de versiones
 
 ### v1.1 (Julio 2025)
-- Añadido informe ejecutivo inicial tras el análisis de URL.
-- Integración básica con exportación a PDF del análisis.
-- Vista `dashboard` con histórico de análisis por usuario.
-- Interfaz funcional con login y registro de usuarios.
-- Estilo base con fondo degradado y diseño claro.
+
+* Añadido informe ejecutivo inicial tras el análisis de URL.
+* Integración básica con exportación a PDF del análisis.
+* Vista `dashboard` con histórico de análisis por usuario.
+* Interfaz funcional con login y registro de usuarios.
+* Estilo base con fondo degradado y diseño claro.
+
+### v1.2 (Julio 2025)
+
+* Commit inicial completo para revisión con Codex.
+* Añadida funcionalidad de entrenamiento desde CSV (AutoML).
+* Vista `train_model` con métricas y nueva lógica ML.
+* Refuerzo del análisis heurístico y visualizaciones en dashboard.
+* Rediseño de rutas y templates para exportar e interpretar análisis.
+
+---
+
+## Versión
+
+`v1.2` — Julio 2025
+
+---
+
+## Instalación local
+
+```bash
+git clone https://github.com/13Stacey/PhishEye.git
+cd PhishEye
+python -m venv venv
+venv\Scripts\activate  # En Windows
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+```
+
+---
