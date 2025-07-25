@@ -2,12 +2,18 @@
 {% block content %}
 <h2>Bienvenido, {{ request.user.username }}</h2>
 
-
 <form method="POST" action="{% url 'analyze_url' %}">
     {% csrf_token %}
     {{ form.url }}
     <button type="submit">Analizar</button>
 </form>
+
+<!-- BOTÓN DE ENTRENAMIENTO PERSONALIZADO -->
+<div class="mt-4 text-end">
+    <a href="{% url 'train_model' %}" class="btn btn-success">
+        Entrenar modelo personalizado
+    </a>
+</div>
 
 <hr>
 

@@ -1,0 +1,31 @@
+{% extends "analyzer/base.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>Entrenamiento de Modelo con CSV Personalizado</h2>
+
+    <form method="post" enctype="multipart/form-data" class="mt-4 mb-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Entrenar modelo</button>
+    </form>
+
+    {% if metrics %}
+      <div class="alert alert-success">
+        <h4>Entrenamiento completado:</h4>
+        <ul>
+          <li><strong>Precisión (accuracy):</strong> {{ metrics.accuracy }}</li>
+          <li><strong>Precisión (precision):</strong> {{ metrics.precision }}</li>
+          <li><strong>Recall:</strong> {{ metrics.recall }}</li>
+          <li><strong>Muestras utilizadas:</strong> {{ metrics.samples }}</li>
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if error %}
+      <div class="alert alert-danger">
+        <strong>Error:</strong> {{ error }}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
